@@ -1,0 +1,10 @@
+{
+	"inventory": 
+				{
+					"sniper": [["ItemFlashlight","ItemHatchet","ItemWatch","ItemMatchbox","Makarov","MR43","ItemMap"],["ItemHeatPack","ItemHeatPack","ItemSodaCoke","ItemSodaCoke","FoodCanPasta","ItemSodaCoke","FoodCanBakedBeans","FoodCanPasta","ItemBandage","ItemBandage","ItemBandage","8Rnd_9x18_Makarov"]]
+				},
+	"backpack":
+				 {
+					"sniper": ["DZ_Backpack_EP1",[["MkSDASDASFASDFASD_48_DZ"],[1]],[["ItemPainkiller","ItemSodaCoke","FoodSteakCooked","ItemMorphine","ItemBloodbag","HandGrenade_West","ItemAntibiotic","100Rnd_762x51_M240"],[2,1,1,2,2,1,1,2]]]
+				}
+}
