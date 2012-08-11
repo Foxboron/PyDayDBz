@@ -1,0 +1,22 @@
+PyDayDBZ is a script which makes it easier for admins having their own hives to modify the database.
+
+REQUIRES MYSQL FOR PYTHON!
+I will be working on having it included by default.
+
+commands:
+
+user <nick>
+show (info/inventory/backpack/storage)
+add (inventory/backpack) <item>
+save
+kill <user>
+ress <user>
+check <user>
+
+
+I am not responsible for corrupt userfiles.
+Also note you need to be in the LOBBY OF THE SERVER for this to work, as the database gets updated after logout.
+
+edit the serverconfig file with ip, username, password (nothing for blank) and database.
+
+Currently only tested and 

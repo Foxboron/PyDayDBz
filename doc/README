@@ -1,0 +1,12 @@
+docs include (funny enough) a few files, along with documentation!
+
+default contains presets which can get added to the inventory or backpack of the dayz database.
+
+teleportlocs will contains presets for locations.
+
+inventory is the file which decides what item goes where if you add them one by one.
+
+toolbox is the filre which decides what items goes into the toolbox. weapons and items, among others.
+
+explain of commandos.
+to add items and modify a character indept you use user to select the user. commands as check and (in future) teleport shall not be dependant on this if we add a nick.
