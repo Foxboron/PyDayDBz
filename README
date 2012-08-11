@@ -17,6 +17,6 @@ check <user>
 I am not responsible for corrupt userfiles.
 Also note you need to be in the LOBBY OF THE SERVER for this to work, as the database gets updated after logout.
 
-edit the serverconfig file with ip, username, password (nothing for blank) and database.
+edit the serverconfig file with ip, username, password (blank for nothing) and database.
 
 Currently only tested and 
