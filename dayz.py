@@ -1,7 +1,9 @@
+"""Main Script"""
 from lib.data import DayZDB
 from lib.common import PlayerEdit
 from lib.parser import CharacterHandler
-import os
+import re
+
 
 class DayZCli(object):
     """docstring for DayZCli"""
@@ -13,6 +15,7 @@ class DayZCli(object):
         self.main()
 
     def main(self):
+        """Main method."""
         while True:
             s = self.cmd_input(default=True)
             if "user" in s and len(s) == 2:
@@ -20,11 +23,11 @@ class DayZCli(object):
                 if self.player:
                     self.character = self.DB.char_data()
                     try:
-                        self.character[6] = CharacterHandler().cdecode(self.character[6])
+                        self.character[6] = CharacterHandler().cdecode(
+                                                            self.character[6])
                     except TypeError, e:
                         raise e
-                        pass
-                    self.PE = PlayerEdit(self.player[1],self.character)
+                    self.PE = PlayerEdit(self.player[1], self.character)
                 else:
                     print "Character not found!"
             elif "add" in s:
@@ -39,12 +42,14 @@ class DayZCli(object):
                     print "No selected players!"
             elif "remove" in s:
                 if self.player:
-                        if "inventory" in s:
-                            self.character[5] = self.PE.remove_inventory(s[2], s[2:])
-                        elif "backpack" in s:
-                            self.character[6] = self.PE.remove_backpack(s[2], s[2:])
-                        else:
-                            pass
+                    if "inventory" in s:
+                        self.character[5] = self.PE.remove_inventory(
+                                                        s[2], s[2:])
+                    elif "backpack" in s:
+                        self.character[6] = self.PE.remove_backpack(
+                                                        s[2], s[2:])
+                    else:
+                        pass
                 else:
                     print "No selected players!"
             elif "clear" in s:
@@ -71,7 +76,7 @@ class DayZCli(object):
             elif "ress" in s:
                 if len(s) > 1:
                     tempt = self.DB.Search(s[1])
-                    tempdata = self.DB.fetch_char_data(tempt[0])
+                    tempdata = self.DB.char_data(num=tempt[0])
                     tempdata[6] = CharacterHandler().cdecode(tempdata[6])
                     tempdata[9] = 1
                     self.DB.save_player(tempdata)
@@ -80,19 +85,24 @@ class DayZCli(object):
             elif "kill" in s:
                 if len(s) > 1:
                     tempt = self.DB.Search(s[1])
-                    tempdata = self.DB.fetch_char_data(tempt[0])
+                    tempdata = self.DB.char_data(num=tempt[0])
+                    tempdata[6] = CharacterHandler().cdecode(tempdata[6])
                     tempdata[9] = 0
                     self.DB.save_player(tempdata)
                 else:
                     self.character[9] = 0
             elif "check" in s:
                 try:
-                    temp = self.DB.Search(s[1])
-                    if temp:
-                        temp2 = self.DB.char_data()
-                        PlayerEdit(s[1],temp2).ShowUser([])
+                    if re.match("^[0-9]*$", s[1]):
+                        temp2 = self.DB.char_data(num=s[1])
+                        PlayerEdit(s[1], temp2).ShowUser([])
                     else:
-                        print "Character not found!"
+                        temp = self.DB.Search(s[1])
+                        if temp:
+                            temp2 = self.DB.char_data()
+                            PlayerEdit(s[1], temp2).ShowUser([])
+                        else:
+                            print "Character not found!"
                 except IndexError, e:
                     print "Select a user!"
                     raise
@@ -101,13 +111,24 @@ class DayZCli(object):
             elif "vehicle" in s:
                 pass
             elif "teleport" in s:
-                if len(s) > 1:
-                    pass
+                if len(s) != 1:
+                    if s.index("to") == 2:
+                        pass
+                    else:
+                        if len(s) != 4:
+                            if len(s) == 3:
+                                #Add presets or chars
+                                self.character[7] = self.PE.edit_cords(s[2:])
+                            else:
+                                print "No cordinates!"
+                        else:
+                            print "yay"
+                            self.character[7] = "[360, [%s, %s]]" % (s[2], s[3])
                 else:
-                    print "no char selected"
-            pass
+                    print "Lol"
 
     def cmd_input(self, message=None, text=None, default=None):
+        """wrapper for raw_input()"""
         if message:
             print "%s" % message
         while True:
@@ -118,7 +139,6 @@ class DayZCli(object):
             if not data:
                 if default == False:
                     break
-                pass
 
             if data:
                 data = data.split(" ")
@@ -127,10 +147,6 @@ class DayZCli(object):
 if __name__ == '__main__':
     try:
         Day = DayZCli()
-        from lib.invhandler import InventoryHandler
     except KeyboardInterrupt:
         print "\nQuitted"
         exit()
-
-
-        
