@@ -1,3 +1,4 @@
+"""Functions and classes commong to all modules of the script"""
 from parser import CharacterHandler
 from parser import VehicleHandler
 from data import DayZDB
@@ -7,6 +8,7 @@ import json
 
 
 def health(hp):
+    """Display Health."""
     try:
         hp = hp.split(",")
         return hp[7]
@@ -15,12 +17,21 @@ def health(hp):
 
 
 def loc(l):
+    """Display location."""
     l = ast.literal_eval(l)
     s = "Rot: %s, V/H: %s, O/P: %s" % (str(l[0]), str(l[1][0]), str(l[1][1]))
     return s
 
 
 class PlayerEdit(object):
+    """Main class editing the player variables."""
+    inventoryfile = open(os.getcwd() + "\\doc\\inventory", "rb").read()
+    toolboxfile = open(os.getcwd() + "\\doc\\toolbox", "rb").read()
+    setlist = json.loads(
+            open(os.getcwd() + "\\doc\\default", "rb").read())
+    teleportloc = json.loads(
+            open(os.getcwd() + "\\doc\\teleportlocs", "rb").read())
+
     def __init__(self, nick, player):
         self.nick = nick
         self.player = player
@@ -32,7 +43,18 @@ class PlayerEdit(object):
         self.setlist = json.loads(open(os.getcwd() + "\\doc\\default", "rb").read())
         self.teleportloc = json.loads(open(os.getcwd() + "\\doc\\teleportlocs", "rb").read())
 
+    def edit_cords(self, loc):
+        """Edit the cords for the character."""
+        if loc[0] in self.teleportloc.keys():
+            self.player[7] = self.teleportloc[loc[0]]
+        else:
+            tempt = self.db.Search(loc[0])
+            tempdata = self.db.char_data(num=tempt[0])
+            self.player[7] = tempdata[7]
+        return self.player[7]
+
     def add_inventory(self, item, *kwargs):
+        """Adds an item to the inventory."""
         if item in self.setlist['inventory'].keys():
             self.inventory = json.dumps(self.setlist['inventory'][item])
         else:
@@ -45,6 +67,7 @@ class PlayerEdit(object):
         return self.inventory
 
     def remove_inventory(self, item, *kwargs):
+        """Removes and item form the inventory."""
         print self.inventory
         if item in self.inventoryfile:
             self.inventory[1].remove(item)
@@ -53,6 +76,7 @@ class PlayerEdit(object):
         return self.inventory
 
     def add_backpack(self, item, *kwargs):
+        """Adds an item to the backpack."""
         if item in self.setlist['backpack'].keys():
             tmp = json.dumps(self.setlist['backpack'][item])
             self.backpack = CharacterHandler().cdecode(tmp)
@@ -70,6 +94,7 @@ class PlayerEdit(object):
         return self.backpack
 
     def remove_backpack(self, item, *kwargs):
+        """Removes an item from the backpack."""
         if item in self.backpack[1][0][0].keys():
             if self.backpack[1][0][0][item] > 1:
                 self.backpack[1][0][0][item] -= 1
@@ -83,6 +108,7 @@ class PlayerEdit(object):
         return self.backpack
 
     def show_inventory(self):
+        """Displays the inventory."""
         try:
             self.inventory = ast.literal_eval(self.inventory)
         except ValueError:
@@ -98,6 +124,7 @@ class PlayerEdit(object):
             print "No inventory"
 
     def show_backpack(self):
+        """Displays the backpack."""
         try:
             self.backpack = CharacterHandler().cdecode(self.backpack)
             if self.backpack[1][0][0].keys() or self.backpack[1][1][0].keys():
@@ -114,6 +141,7 @@ class PlayerEdit(object):
             print "Empty"
 
     def ShowUser(self, *kwargs):
+        """Displays the user information."""
         print ""
         pack = kwargs[0]
         if "info" in pack or not pack:

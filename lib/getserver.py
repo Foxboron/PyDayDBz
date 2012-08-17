@@ -1,9 +1,11 @@
+"""Serverconfig file handler"""
 import os
-import sys
 
 
 def getserver():
-    serverconfig = open(os.getcwd()+"\\serverconfig", "rb").readlines()
+    """Fetches the server config file."""
+    serverconfig = open(os.getcwd() + "\\serverconfig", "rb")
+    serverconfig = serverconfig.read().split('\r\n')
     return serverconfig
 
 if __name__ == '__main__':
