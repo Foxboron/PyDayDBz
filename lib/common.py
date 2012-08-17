@@ -4,7 +4,7 @@ from data import DayZDB
 import ast
 import os
 import json
-import unicodedata
+
 
 def health(hp):
     try:
@@ -13,11 +13,13 @@ def health(hp):
     except IndexError:
         return "No info"
 
+
 def loc(l):
     l = ast.literal_eval(l)
     s = "Rot: %s, V/H: %s, O/P: %s" % (str(l[0]), str(l[1][0]), str(l[1][1]))
     return s
-    
+
+
 class PlayerEdit(object):
     def __init__(self, nick, player):
         self.nick = nick
@@ -25,11 +27,10 @@ class PlayerEdit(object):
         self.db = DayZDB
         self.inventory = ast.literal_eval(self.player[5])
         self.backpack = self.player[6]
-        self.inventoryfile = open(os.getcwd()+"\\doc\\inventory", "rb").read()
-        self.toolboxfile = open(os.getcwd()+"\\doc\\toolbox", "rb").read()
-        self.setlist = json.loads(open(os.getcwd()+"\\doc\\default", "rb").read())
-        self.teleportloc = json.loads(open(os.getcwd()+"\\doc\\teleportlocs", "rb").read())
-
+        self.inventoryfile = open(os.getcwd() + "\\doc\\inventory", "rb").read()
+        self.toolboxfile = open(os.getcwd() + "\\doc\\toolbox", "rb").read()
+        self.setlist = json.loads(open(os.getcwd() + "\\doc\\default", "rb").read())
+        self.teleportloc = json.loads(open(os.getcwd() + "\\doc\\teleportlocs", "rb").read())
 
     def add_inventory(self, item, *kwargs):
         if item in self.setlist['inventory'].keys():
@@ -90,7 +91,7 @@ class PlayerEdit(object):
             for i in self.inventory:
                 for n in i:
                     if isinstance(n, list):
-                        print "%s, x%s" % (n[0],n[1])
+                        print "%s, x%s" % (n[0], n[1])
                     else:
                         print n
         else:
@@ -101,11 +102,11 @@ class PlayerEdit(object):
             self.backpack = CharacterHandler().cdecode(self.backpack)
             if self.backpack[1][0][0].keys() or self.backpack[1][1][0].keys():
                 if self.backpack[1][0][0].keys():
-                    for k,v in self.backpack[1][0][0].items():
-                        print "%s x%s" % (k,v)
+                    for k, v in self.backpack[1][0][0].items():
+                        print "%s x%s" % (k, v)
                 if self.backpack[1][1][0].keys():
-                    for k,v in self.backpack[1][1][0].items():
-                        print "%s x%s" % (k,v)
+                    for k, v in self.backpack[1][1][0].items():
+                        print "%s x%s" % (k, v)
             else:
                 print "Empty"
         except Exception, e:
@@ -144,17 +145,16 @@ class PlayerEdit(object):
                     print  loc(i[6])
                     print "\nInventory:"
                     VH = VehicleHandler(i[7])
-                    inventory,toolbox = VH.vdecode()
+                    inventory, toolbox = VH.vdecode()
                     if inventory.keys() or toolbox.keys():
                         if inventory.keys():
-                            for k,v in inventory.items():
-                                print "%s x%s" %(k,v)
+                            for k, v in inventory.items():
+                                print "%s x%s" % (k, v)
                         if toolbox.keys():
-                            for k,v in toolbox.items():
-                                print "%s x%s" %(k,v)
+                            for k, v in toolbox.items():
+                                print "%s x%s" % (k, v)
                     else:
                         print "No inventory"
                     print ""
             else:
                 print "\nNO storage units!"
-            
