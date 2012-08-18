@@ -47,11 +47,17 @@ class PlayerEdit(object):
         """Edit the cords for the character."""
         if loc[0] in self.teleportloc.keys():
             self.player[7] = self.teleportloc[loc[0]]
+            print self.player[7]
+            return self.player[7]
         else:
             tempt = self.db.Search(loc[0])
-            tempdata = self.db.char_data(num=tempt[0])
-            self.player[7] = tempdata[7]
-        return self.player[7]
+            if tempt:
+                tempdata = self.db.char_data(num=tempt[0])
+                self.player[7] = tempdata[7]
+                print self.player[7]
+                return self.player[7]
+            else:
+                print "No player found!"
 
     def add_inventory(self, item, *kwargs):
         """Adds an item to the inventory."""
