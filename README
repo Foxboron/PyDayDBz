@@ -8,6 +8,7 @@ commands:
 user <nick>
 show (info/inventory/backpack/storage)
 add (inventory/backpack) <item>
+teleport <nick> to (player/x y/preset)
 save
 kill <user>
 ress <user>
