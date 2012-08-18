@@ -113,16 +113,29 @@ class DayZCli(object):
             elif "teleport" in s:
                 if len(s) != 1:
                     if s.index("to") == 2:
-                        pass
+                        if len(s) != 5:
+                            tempt = self.DB.Search(s[1])
+                            tempdata = self.DB.char_data(num=tempt[0])
+                            tempdata[6] = CharacterHandler().cdecode(tempdata[6])
+                            tempdata[7] = PlayerEdit(s[1]).edit_cords(s[3:])
+                            self.DB.save_player(tempdata)
+                        else:
+                            tempt = self.DB.Search(s[1])
+                            tempdata = self.DB.char_data(num=tempt[0])
+                            tempdata[6] = CharacterHandler().cdecode(tempdata[6])
+                            tempdata[7] = "[360, [%s, %s]]" % (s[3], s[4])
+                            self.DB.save_player(tempdata)
                     else:
                         if len(s) != 4:
                             if len(s) == 3:
                                 #Add presets or chars
-                                self.character[7] = self.PE.edit_cords(s[2:])
+                                try:
+                                    self.character[7] = self.PE.edit_cords(s[2:])
+                                except AttributeError:
+                                    print "No user selected!"
                             else:
                                 print "No cordinates!"
                         else:
-                            print "yay"
                             self.character[7] = "[360, [%s, %s]]" % (s[2], s[3])
                 else:
                     print "Lol"
